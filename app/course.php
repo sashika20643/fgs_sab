@@ -13,4 +13,13 @@ class course extends Model
         return $this->belongsTo(Payment::class,'course_id','course_id');
 
     }
+    public function students()
+{
+    return $this->hasMany(Student::class, 'course_applied', 'course_id');
+}
+
+public function course_fee()
+{
+    return $this->hasMany(Course_fee::class, 'c_id', 'course_id');
+}
 }

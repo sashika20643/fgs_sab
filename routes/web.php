@@ -3,7 +3,14 @@
 use Illuminate\Support\Facades\Route;
 use App\http\Controllers\student\PaymentController;
 use App\http\Controllers\Admin\AdminPaymentController;
+use App\http\Controllers\Admin\ReportController;
+
 use App\http\Controllers\Admin\UserController;
+use App\http\Controllers\Admin\SubjectController;
+use App\http\Controllers\Admin\ResultController;
+use App\http\Controllers\student\ResultController as StudentResultController;
+
+
 use App\http\Controllers\HomeController;
 /*
 |--------------------------------------------------------------------------
@@ -62,9 +69,37 @@ Route::middleware(['auth'])->group(function () {
 
 
     //reports
-    route::get('/reports',[AdminPaymentController::class,'reports'])->name('admin.report');
+    Route::prefix('reports')->group(function () {
+    route::get('/',[ReportController::class,'reports'])->name('admin.report');
 
-    Route::get('/get-fees/{course_id}', [AdminPaymentController::class,'getfees'])->name('getfees');
+    Route::get('/get-fees/{course_id}', [ReportController::class,'getfees'])->name('getfees');
+
+    Route::get('/generate', [ReportController::class,'generate'])->name('report.generate');
+    Route::post('/sendmail', [ReportController::class,'sendmail'])->name('report.sendmail');
+    // Route::get('/export', [ReportController::class,'users'])->name('report.export');
+    Route::get('/export', [ReportController::class, 'export'])->name('report.export');
+    });
+
+
+    //Subject.....
+    Route::prefix('subject')->group(function () {
+        route::get('/',[SubjectController::class,'Addsubjectview'])->name('admin.subject');
+        route::post('/store',[SubjectController::class,'storeSubject'])->name('admin.store');
+        Route::get('/all', [SubjectController::class,'index'])->name('admin.subject.index');
+        Route::delete('/subjects/{subject}', [SubjectController::class,'destroy'])->name('subjects.destroy');
+
+
+
+        });
+//result......
+Route::prefix('results')->group(function () {
+    Route::get('/add/{user_id}/{semester?}', [ResultController::class,'create'])->name('admin.results.create');
+    Route::put('/results/{user_id}/{subject_id}', [ResultController::class, 'updateResult'])->name('admin.results.update');
+
+});
+
+
+
 
     });
 
@@ -89,6 +124,7 @@ Route::middleware(['auth'])->group(function () {
 
 
     route::post('/pay',[PaymentController::class,'pay'])->name('pay');
+    Route::get('/showresult/{semester?}', [StudentResultController::class,'show'])->name('student.results.show');
 
 
     });

@@ -11,10 +11,14 @@ class course_fee extends Model
     {
         return $this->hasMany(Partial_fee::class);
     }
-    public function Stu_fee()
-    {        return $this->belongsTo(Stu_fee::class,'feeid','id');
+    // public function Stu_fee()
+    // {        return $this->belongsTo(Stu_fee::class,'feeid','id');
 
-    }
+    // }
+    public function stu_fee()
+{
+    return $this->hasMany(Stu_fee::class, 'feeid', 'id');
+}
     public function Payment()
     {
         return $this->hasMany(Payment::class);

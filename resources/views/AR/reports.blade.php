@@ -2,14 +2,14 @@
 
 @section('content')
 <div class="container">
-    <form action="">
-
+    <form action="{{route('report.generate')}}" type="Post">
+@csrf
 
         <div class="form-group">
             <label for="select-element">Select Course</label>
-            <select class="form-control" id="select-element" onChange="loaddata()">
+            <select class="form-control" id="select-course" name="course" onChange="loaddata()">
                 @foreach ($courses as $course )
-                <option value="{{$course->id}}">{{$course->course_title}}</option>
+                <option value="{{$course->course_id}}">{{$course->course_title}}</option>
 
                 @endforeach
 
@@ -17,32 +17,16 @@
           </div>
           <div class="form-group">
             <label for="select-element">Select Intake</label>
-            <select class="form-control" id="select-element">
+            <select class="form-control" id="select-element" name="intake">
                 @foreach ($intakes as $intake )
-                <option value="{{$intake->id}}">{{$intake->name}}</option>
+                <option value="{{$intake->name}}">{{$intake->name}}</option>
 
                 @endforeach
 
             </select>
           </div>
 
-          <div class="form-group" id="fee" style="display:none;">
-            <label for="select-element">Select Fee</label>
-            <select class="form-control" id="select-fee">
 
-
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="select-element">Select Paid</label>
-            <select class="form-control" id="select-element">
-              <option value="option1">Paid</option>
-              <option value="option2">Not Paid</option>
-              <option value="option3">All</option>
-
-            </select>
-          </div>
 
 
 <button class="btn btn-success">Generate</button>
@@ -56,7 +40,8 @@
 
     function loaddata() {
     $("#fee").show();
-    var course_id = 1;
+    var course_id = $('#select-course').val();
+    console.log(course_id);
     $.ajax({
         url: "{{route('getfees','1')}}",
         headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
@@ -64,10 +49,17 @@
         type: 'GET',
         success: function(data) {
             console.log(data);
+            var select = $('#select-fee');
+            select.empty();
+            $.each(data, function(key, value) {
+                select.append('<option value="' + value.id + '">' + value.fee_type + '</option>');
+            });
+
         },
         error: function(xhr, status, error) {
             console.log(xhr.responseText);
-            $('#select-fee').html('    <option value="option1">Option 1</option>')
+
+
         }
     });
 }

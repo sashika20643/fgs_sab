@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends Authenticatable
 {
@@ -37,8 +38,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function Student(): HasOne
+    public function student(): HasOne
     {
-        return $this->hasOne(Student::class,'stu_email,email');
+        return $this->hasOne(Student::class, 'stu_email', 'email');
     }
+
+    public function subjects()
+{
+    return $this->hasMany(Subject::class, 'course_id', 'course_id');
+}
 }

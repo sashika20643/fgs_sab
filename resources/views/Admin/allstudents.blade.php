@@ -73,6 +73,9 @@ Filter
         <th>
        Intake
         </th>
+        <th>
+             Results
+          </th>
             <th>
               Show more detais
             </th>
@@ -100,6 +103,9 @@ Filter
 </td>
 <td>
     {{$student->intake}}
+</td>
+<td>
+    <a href="{{ route('admin.results.create', $student->stu_email) }}" class="btn btn-outline-primary" >Results</a>
 </td>
 <td>
     <a href="{{route('Studentview',$student->stu_email)}}" class="btn btn-outline-success" >Show More</a>

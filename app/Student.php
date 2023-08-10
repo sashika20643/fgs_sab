@@ -22,4 +22,14 @@ class Student extends Model
 
     }
 
+    public function subjects()
+{
+    return $this->hasMany(Subject::class, 'course_id', 'course_applied');
+}
+
+
+public function course()
+{
+    return $this->belongsTo(Course::class, 'course_applied', 'course_id');
+}
 }

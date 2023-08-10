@@ -23,4 +23,8 @@ class Stu_fee extends Model
         return $this->hasMany(Course_fee::class,'id','feeid');
 
     }
+    public function student()
+{
+    return $this->belongsTo(Student::class, 'stu_id', 'id');
+}
 }
